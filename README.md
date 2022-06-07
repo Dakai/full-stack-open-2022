@@ -4,4 +4,4 @@ This repository contains the solutions to the 2022 edition of the Full Stack Ope
 
 ## Part 0 - [Fundamentals of Web Apps](https://fullstackopen.com/en/part0)
 
-[View Solutions][https://github.com/dakai/full-stack-open-2022/tree/main/part0]
+[View Solutions](https://github.com/dakai/full-stack-open-2022/tree/main/part0)
