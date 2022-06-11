@@ -9,3 +9,7 @@ This repository contains the solutions to the 2022 edition of the Full Stack Ope
 ## Part 1 - [Introduction to React](https://fullstackopen.com/en/part1)
 
 [View Solutions](https://github.com/dakai/full-stack-open-2022/tree/main/part1)
+
+## Part 2 - [Communicating with server](https://fullstackopen.com/en/part2)
+
+[View Solutions](https://github.com/dakai/full-stack-open-2022/tree/main/part2)
