@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
-
+import axios from "axios";
 /*
 const Persons = ({ persons, showFilter }) => {
   return (
@@ -22,12 +23,34 @@ const Persons = ({ persons, showFilter }) => {
 */
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
+  let personsIds = [];
+  const [showFilter, setShowFilter] = useState();
+  let idMax;
+  useEffect(() => {
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then((response) => {
+      console.log("promis fulfilled");
+      console.log("response.data", response.data);
+      setPersons(response.data);
+      personsIds = Array.from(
+        { length: response.data.length },
+        (_, i) => i + 1
+      );
+      setShowFilter(personsIds);
+      idMax = Math.max.apply(Math, personsIds);
+    });
+  }, []);
+
+  console.log("showFilter", showFilter);
+  /*
+	const [persons, setPersons] = useState([
+	{ name: "Arto Hellas", number: "040-123456", id: 1 },
+	{ name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+	{ name: "Dan Abramov", number: "12-43-234345", id: 3 },
+	{ name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+	]);
+	*/
 
   //const [newName, setNewName] = useState("");
   //const [newNumber, setNewNumber] = useState("");
@@ -40,9 +63,6 @@ const App = () => {
     return arrayData;
   };
 	*/
-  const personsIds = Array.from({ length: persons.length }, (_, i) => i + 1);
-  const [showFilter, setShowFilter] = useState(personsIds);
-  const idMax = Math.max.apply(Math, personsIds);
   /*
 	const handleNameChange = (event) => {
     setNewName(event.target.value);
