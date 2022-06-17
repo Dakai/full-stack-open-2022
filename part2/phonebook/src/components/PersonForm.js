@@ -1,13 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import personsService from "../services/persons";
 
-const PersonForm = ({
-  persons,
-  setPersons,
-  idMax,
-  showFilter,
-  setShowFilter,
-}) => {
+const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -37,18 +32,22 @@ const PersonForm = ({
       const nameObject = {
         name: newName,
         number: newNumber,
-        id: idMax + 1,
       };
 
       if (ifIncluded(newName)) {
         alert(newName + "is already added to Phonebook");
       } else {
-        console.log("nameObject", nameObject);
-        setPersons(persons.concat(nameObject));
-        setShowFilter(showFilter.concat(idMax + 1));
+        //console.log("nameObject", nameObject);
+        //setPersons(persons.concat(nameObject));
+        //setShowFilter(showFilter.concat(idMax + 1));
         setNewName("");
         setNewNumber("");
-        console.log("persons", persons);
+        //console.log("persons", persons);
+
+        personsService.create(nameObject).then((response) => {
+          setPersons(persons.concat(response.data));
+          setShowFilter(showFilter.concat(response.data.id));
+        });
       }
     }
   };

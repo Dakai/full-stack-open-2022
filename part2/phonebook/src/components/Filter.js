@@ -1,10 +1,8 @@
 import React from "react";
-//import { useState } from "react";
 
 const Filter = ({ persons, setShowFilter }) => {
   //console.log("showFilter", showFilter);
   const handleFilterChange = (event) => {
-    //setNewFilter(event.target.value);
     filterName(event.target.value);
     //console.log("event.target.value", event.target.value);
   };
@@ -20,8 +18,6 @@ const Filter = ({ persons, setShowFilter }) => {
       return setShowFilter(arrayData);
     });
   };
-
-  //const [showFilter, setshowFilter] = useState(initFilter());
 
   return (
     <>
