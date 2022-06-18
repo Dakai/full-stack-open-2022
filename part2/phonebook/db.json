@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
@@ -21,64 +11,9 @@
       "id": 4
     },
     {
-      "name": "fuck ",
-      "number": "me",
+      "name": "Mary",
+      "number": "123-124-1234-12",
       "id": 5
-    },
-    {
-      "name": "fuck me",
-      "number": "again",
-      "id": 6
-    },
-    {
-      "name": "fucking ",
-      "number": "yeah",
-      "id": 7
-    },
-    {
-      "name": "fuck you",
-      "number": "uni helsinki",
-      "id": 8
-    },
-    {
-      "name": "shit",
-      "number": "hole",
-      "id": 9
-    },
-    {
-      "name": "damn",
-      "number": "you",
-      "id": 10
-    },
-    {
-      "name": "shut ",
-      "number": "up",
-      "id": 11
-    },
-    {
-      "name": "make new",
-      "number": "123",
-      "id": 12
-    },
-    {
-      "name": "try again",
-      "number": "12345",
-      "id": 13
-    },
-    {
-      "name": "damn!",
-      "number": "fuck!",
-      "id": 14
-    },
-    {
-      "name": "hey you",
-      "number": "gogogo",
-      "id": 15
-    },
-    {
-      "name": "check",
-      "number": "personsService.create",
-      "id": 16
     }
   ]
 }

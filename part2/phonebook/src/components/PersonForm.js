@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import personsService from "../services/persons";
+import filterArrayService from "../services/filterArray";
 
 const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
   const [newName, setNewName] = useState("");
@@ -14,6 +15,11 @@ const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
     setNewNumber(event.target.value);
   };
 
+  const ifIncluded = () => {
+    const person = persons.find((person) => person.name === newName);
+    return person;
+  };
+  /*
   const ifIncluded = (newName) => {
     const arrayData = [];
     persons.map((person) => {
@@ -24,7 +30,9 @@ const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
       return true;
     }
   };
+	*/
   const addName = (event) => {
+    console.log(ifIncluded());
     if (!!newName) {
       //prevent adding a empty entry
       event.preventDefault();
@@ -33,9 +41,24 @@ const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
         name: newName,
         number: newNumber,
       };
+      if (ifIncluded()) {
+        if (
+          window.confirm(
+            `${newName} is already added to the Phonebook, repace the old number with the new one?`
+          )
+        ) {
+          const id = ifIncluded().id;
+          personsService.update(id, nameObject).then((response) => {
+            personsService.getAll().then((response) => {
+              setPersons(response.data);
+              setShowFilter(filterArrayService.filterArray(response.data));
+            });
 
-      if (ifIncluded(newName)) {
-        alert(newName + "is already added to Phonebook");
+            //setPersons(persons.concat(response.data));
+            //setShowFilter(showFilter.concat(response.data.id));
+          });
+        }
+        //alert(newName + "is already added to Phonebook");
       } else {
         //console.log("nameObject", nameObject);
         //setPersons(persons.concat(nameObject));

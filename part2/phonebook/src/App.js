@@ -4,24 +4,19 @@ import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import personsService from "./services/persons";
+import filterArrayService from "./services/filterArray";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  let personsIds = [];
   const [showFilter, setShowFilter] = useState();
   useEffect(() => {
-    console.log("effect");
+    //console.log("effect");
     personsService.getAll().then((response) => {
       setPersons(response.data);
-      personsIds = Array.from(
-        { length: response.data.length },
-        (_, i) => i + 1
-      );
-      setShowFilter(personsIds);
+      setShowFilter(filterArrayService.filterArray(response.data));
+      //console.log(FilterArray(response.data));
     });
   }, []);
-
-  console.log("showFilter", showFilter);
   return (
     <div>
       <h2>Phonebook</h2>
@@ -36,7 +31,12 @@ const App = () => {
         showFilter={showFilter}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} showFilter={showFilter} />
+      <Persons
+        setShowFilter={setShowFilter}
+        persons={persons}
+        showFilter={showFilter}
+        setPersons={setPersons}
+      />
     </div>
   );
 };

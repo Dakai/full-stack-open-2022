@@ -1,12 +1,19 @@
 import React from "react";
 import personsService from "../services/persons";
+import filterArrayService from "../services/filterArray";
 
-const DeleteButton = (id) => {
+const DeleteButton = ({ id, setPersons, setShowFilter, name }) => {
   const handelDelete = () => {
-    console.log("id", id);
-    personsService.remove(id).then((response) => {
-      console.log("response", response.data);
-    });
+    if (window.confirm(`Delete ${name}?`)) {
+      personsService.remove(id).then(() => {
+        //console.log("response", response.data);
+        personsService.getAll().then((response) => {
+          setPersons(response.data);
+          setShowFilter(filterArrayService.filterArray(response.data));
+        });
+      });
+    }
+    //console.log("id", id);
   };
   return (
     <>
@@ -16,16 +23,23 @@ const DeleteButton = (id) => {
     </>
   );
 };
-const Persons = ({ persons, showFilter }) => {
+
+const Persons = ({ persons, showFilter, setPersons, setShowFilter }) => {
   //console.log("persons", persons);
-  console.log("showFilter", showFilter);
+  //console.log("showFilter", showFilter);
   return (
     <ul>
       {persons.map((persons, i) => (
         <div key={i}>
           {showFilter.includes(persons.id) ? (
             <li key={i}>
-              {persons.name} {persons.number} <DeleteButton id={persons.id} />
+              {persons.name} {persons.number}{" "}
+              <DeleteButton
+                name={persons.name}
+                id={persons.id}
+                setShowFilter={setShowFilter}
+                setPersons={setPersons}
+              />
             </li>
           ) : null}
         </div>
