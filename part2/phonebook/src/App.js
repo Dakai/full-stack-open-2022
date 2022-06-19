@@ -5,10 +5,32 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import personsService from "./services/persons";
 import filterArrayService from "./services/filterArray";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [showFilter, setShowFilter] = useState();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [notifyMessage, setNotifyMessage] = useState(null);
+
+  const ErrorMessage = ({ message }) => {
+    console.log(message);
+    if (message === null) {
+      return null;
+    } else {
+      return <div className="error">{message}</div>;
+    }
+  };
+
+  const NotifyMessage = ({ message }) => {
+    console.log(message);
+    if (message === null) {
+      return null;
+    } else {
+      return <div className="notify">{message}</div>;
+    }
+  };
+
   useEffect(() => {
     //console.log("effect");
     personsService.getAll().then((response) => {
@@ -20,6 +42,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <ErrorMessage message={errorMessage} />
+      <NotifyMessage message={notifyMessage} />
       <div>
         <Filter persons={persons} setShowFilter={setShowFilter} />
       </div>
@@ -29,6 +53,7 @@ const App = () => {
         setPersons={setPersons}
         setShowFilter={setShowFilter}
         showFilter={showFilter}
+        setNotifyMessage={setNotifyMessage}
       />
       <h3>Numbers</h3>
       <Persons
@@ -36,6 +61,7 @@ const App = () => {
         persons={persons}
         showFilter={showFilter}
         setPersons={setPersons}
+        setErrorMessage={setErrorMessage}
       />
     </div>
   );

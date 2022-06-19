@@ -3,7 +3,13 @@ import { useState } from "react";
 import personsService from "../services/persons";
 import filterArrayService from "../services/filterArray";
 
-const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
+const PersonForm = ({
+  persons,
+  setPersons,
+  showFilter,
+  setShowFilter,
+  setNotifyMessage,
+}) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -16,7 +22,8 @@ const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
   };
 
   const ifIncluded = () => {
-    const person = persons.find((person) => person.name === newName);
+    const nametrim = newName.trim();
+    const person = persons.find((person) => person.name === nametrim);
     return person;
   };
   /*
@@ -37,14 +44,16 @@ const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
       //prevent adding a empty entry
       event.preventDefault();
       //console.log("button clicked", event.target);
+      const nametrim = newName.trim();
+      const numbertrim = newNumber.trim();
       const nameObject = {
-        name: newName,
-        number: newNumber,
+        name: nametrim,
+        number: numbertrim,
       };
       if (ifIncluded()) {
         if (
           window.confirm(
-            `${newName} is already added to the Phonebook, repace the old number with the new one?`
+            `${nametrim} is already added to the Phonebook, repace the old number with the new one?`
           )
         ) {
           const id = ifIncluded().id;
@@ -52,24 +61,28 @@ const PersonForm = ({ persons, setPersons, showFilter, setShowFilter }) => {
             personsService.getAll().then((response) => {
               setPersons(response.data);
               setShowFilter(filterArrayService.filterArray(response.data));
+              setNotifyMessage(`${nametrim} number updated`);
+              setNewName("");
+              setNewNumber("");
+              setTimeout(() => {
+                setNotifyMessage(null);
+              }, 5000);
             });
-
-            //setPersons(persons.concat(response.data));
-            //setShowFilter(showFilter.concat(response.data.id));
           });
         }
         //alert(newName + "is already added to Phonebook");
       } else {
         //console.log("nameObject", nameObject);
-        //setPersons(persons.concat(nameObject));
-        //setShowFilter(showFilter.concat(idMax + 1));
         setNewName("");
         setNewNumber("");
         //console.log("persons", persons);
-
         personsService.create(nameObject).then((response) => {
           setPersons(persons.concat(response.data));
           setShowFilter(showFilter.concat(response.data.id));
+          setNotifyMessage(`Added ${nametrim}`);
+          setTimeout(() => {
+            setNotifyMessage(null);
+          }, 5000);
         });
       }
     }
