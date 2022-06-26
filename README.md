@@ -14,6 +14,6 @@ This repository contains the solutions to the 2022 edition of the Full Stack Ope
 
 [View Solutions](https://github.com/dakai/full-stack-open-2022/tree/main/part2)
 
-## Part 2 - [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
+## Part 3 - [Programming a server with NodeJS and Express](https://fullstackopen.com/en/part3)
 
 [View Solutions](https://github.com/dakai/full-stack-open-2022-part3)
