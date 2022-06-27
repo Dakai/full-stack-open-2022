@@ -6,7 +6,6 @@ import PersonForm from "./components/PersonForm";
 import personsService from "./services/persons";
 import filterArrayService from "./services/filterArray";
 import "./index.css";
-
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [showFilter, setShowFilter] = useState();
