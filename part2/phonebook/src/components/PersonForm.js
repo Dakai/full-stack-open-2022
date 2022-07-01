@@ -57,6 +57,7 @@ const PersonForm = ({
           )
         ) {
           const id = ifIncluded().id;
+          console.log(id);
           personsService.update(id, nameObject).then((response) => {
             personsService.getAll().then((response) => {
               setPersons(response.data);
@@ -75,8 +76,9 @@ const PersonForm = ({
         //console.log("nameObject", nameObject);
         setNewName("");
         setNewNumber("");
-        //console.log("persons", persons);
+        console.log("add new person & persons:", persons);
         personsService.create(nameObject).then((response) => {
+          console.log(response);
           setPersons(persons.concat(response.data));
           setShowFilter(showFilter.concat(response.data.id));
           setNotifyMessage(`Added ${nametrim}`);
