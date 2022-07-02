@@ -14,8 +14,8 @@ const DeleteButton = ({
       personsService
         .remove(id)
         .then(() => {
-          //console.log("response", response.data);
           personsService.getAll().then((response) => {
+            //console.log("response", response.data);
             setPersons(response.data);
             setShowFilter(filterArrayService.filterArray(response.data));
           });

@@ -9,6 +9,7 @@ const PersonForm = ({
   showFilter,
   setShowFilter,
   setNotifyMessage,
+  setErrorMessage,
 }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
@@ -40,25 +41,26 @@ const PersonForm = ({
 	*/
   const addName = (event) => {
     console.log(ifIncluded());
-    if (!!newName) {
-      //prevent adding a empty entry
-      event.preventDefault();
-      //console.log("button clicked", event.target);
-      const nametrim = newName.trim();
-      const numbertrim = newNumber.trim();
-      const nameObject = {
-        name: nametrim,
-        number: numbertrim,
-      };
-      if (ifIncluded()) {
-        if (
-          window.confirm(
-            `${nametrim} is already added to the Phonebook, repace the old number with the new one?`
-          )
-        ) {
-          const id = ifIncluded().id;
-          console.log(id);
-          personsService.update(id, nameObject).then((response) => {
+    //if (!!newName) {
+    //prevent adding a empty entry
+    event.preventDefault();
+    const nametrim = newName.trim();
+    const numbertrim = newNumber.trim();
+    const nameObject = {
+      name: nametrim,
+      number: numbertrim,
+    };
+    if (ifIncluded()) {
+      if (
+        window.confirm(
+          `${nametrim} is already added to the Phonebook, repace the old number with the new one?`
+        )
+      ) {
+        const id = ifIncluded().id;
+        //console.log(id);
+        personsService
+          .update(id, nameObject)
+          .then((response) => {
             personsService.getAll().then((response) => {
               setPersons(response.data);
               setShowFilter(filterArrayService.filterArray(response.data));
@@ -69,15 +71,24 @@ const PersonForm = ({
                 setNotifyMessage(null);
               }, 5000);
             });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+            setErrorMessage(JSON.stringify(error.response.data.error));
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
           });
-        }
-        //alert(newName + "is already added to Phonebook");
-      } else {
-        //console.log("nameObject", nameObject);
-        setNewName("");
-        setNewNumber("");
-        console.log("add new person & persons:", persons);
-        personsService.create(nameObject).then((response) => {
+      }
+      //alert(newName + "is already added to Phonebook");
+    } else {
+      //console.log("nameObject", nameObject);
+      setNewName("");
+      setNewNumber("");
+      console.log("add new person & persons:", persons);
+      personsService
+        .create(nameObject)
+        .then((response) => {
           console.log(response);
           setPersons(persons.concat(response.data));
           setShowFilter(showFilter.concat(response.data.id));
@@ -85,9 +96,16 @@ const PersonForm = ({
           setTimeout(() => {
             setNotifyMessage(null);
           }, 5000);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          setErrorMessage(JSON.stringify(error.response.data.error));
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
         });
-      }
     }
+    //}
   };
 
   return (

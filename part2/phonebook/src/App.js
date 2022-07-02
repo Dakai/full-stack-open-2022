@@ -53,6 +53,7 @@ const App = () => {
         setShowFilter={setShowFilter}
         showFilter={showFilter}
         setNotifyMessage={setNotifyMessage}
+        setErrorMessage={setErrorMessage}
       />
       <h3>Numbers</h3>
       <Persons
