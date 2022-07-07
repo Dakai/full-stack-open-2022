@@ -48,3 +48,39 @@ describe('total likes', () => {
     expect(listHelper.totallikes(listWithMultiBlog)).toBe(369)
   })
 })
+
+describe('favorite blog', () => {
+  const listWithMultiBlogs = [
+    {
+      _id: '25a422aa71b54a676234d17f8',
+      title: 'nobook',
+      author: 'nobody',
+      url: 'nourl',
+      likes: 12,
+    },
+    {
+      _id: '25a422aa71b54a676223417f8',
+      title: 'nobook1',
+      author: 'nobody',
+      url: 'nourl',
+      likes: 13,
+    },
+    {
+      _id: '25a422aa71b54a676234d17234',
+      title: 'nobook2',
+      author: 'nobody',
+      url: 'nourl',
+      likes: 123,
+    },
+  ]
+  const favorite = {
+    _id: '25a422aa71b54a676234d17234',
+    title: 'nobook2',
+    author: 'nobody',
+    url: 'nourl',
+    likes: 123,
+  }
+  test('of a bigger list finds the most likes blog', () => {
+    expect(listHelper.favoriteBlog(listWithMultiBlogs)).toEqual(favorite)
+  })
+})
