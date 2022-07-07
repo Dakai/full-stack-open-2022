@@ -1,3 +1,5 @@
+const lodash = require('lodash')
+
 const dummy = (blogs) => {
   return 1
 }
@@ -10,15 +12,24 @@ const totallikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-  return blogs.sort(function (a, b) {
-    //console.log('a likes', a['likes'])
-    //console.log('b likes', b['likes'])
+  return blogs.sort((a, b) => {
     return b['likes'] - a['likes']
   })[0]
 }
 
+const mostBlogs = (blogs) => {
+  const count = lodash.countBy(blogs.flatMap((blog) => blog.author))
+  const author = lodash.max(Object.keys(count), (o) => count[o])
+  const blogCount = count[author]
+  const result = {
+    author: author,
+    blogs: blogCount,
+  }
+  return result
+}
 module.exports = {
   dummy,
   totallikes,
   favoriteBlog,
+  mostBlogs,
 }
