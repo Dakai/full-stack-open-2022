@@ -127,7 +127,54 @@ describe('most blogs author', () => {
     author: 'oddyssius',
     blogs: 3,
   }
-  test.only('of a bigger list finds the author with the most blogs', () => {
+  test('of a bigger list finds the author with the most blogs', () => {
     expect(listHelper.mostBlogs(multiBlogs)).toEqual(author)
+  })
+})
+
+describe('most likes author', () => {
+  const multiBlogs = [
+    {
+      _id: '25a422aa71b54a676234d17234',
+      title: 'nobook2',
+      author: 'oddyssius',
+      url: 'nourl',
+      likes: 123,
+    },
+    {
+      _id: '25a422aa71b54a676232a32b7234',
+      title: 'oddyssey',
+      author: 'oddyssius',
+      url: 'nourl',
+      likes: 123,
+    },
+    {
+      _id: '25a422aa71b54a2342323237234',
+      title: 'oddyssey volume 1',
+      author: 'oddyssius',
+      url: 'nourl',
+      likes: 123,
+    },
+    {
+      _id: '25a422aa71b54a676234d170f8',
+      title: 'nobook',
+      author: 'nobody',
+      url: 'nourl',
+      likes: 12,
+    },
+    {
+      _id: '25a422aa71b54a6762234172f8',
+      title: 'nobook1',
+      author: 'nobody',
+      url: 'nourl',
+      likes: 13,
+    },
+  ]
+  const author = {
+    author: 'oddyssius',
+    likes: 369,
+  }
+  test.only('of a bigger list finds the author with the most likes', () => {
+    expect(listHelper.mostLikes(multiBlogs)).toEqual(author)
   })
 })
