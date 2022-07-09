@@ -45,7 +45,7 @@ const mostLikes = (blogs) => {
     //let obj_likes = { author: author, likes: likes }
     //result.push(obj_likes)
   })
-  console.log(result)
+  //console.log(result)
   return result
   /*
   const result = {
