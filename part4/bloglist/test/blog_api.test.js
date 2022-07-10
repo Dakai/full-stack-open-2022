@@ -1,30 +1,15 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-
+const helper = require('./test_helper')
 const api = supertest(app)
 const Blog = require('../models/blog')
 
-const initialBlogs = [
-  {
-    title: 'How to do raids properly',
-    author: 'Leeory Jenkins',
-    url: 'nourl',
-    likes: 13,
-  },
-  {
-    title: 'nobook1',
-    author: 'nobody',
-    url: 'nourl',
-    likes: 12,
-  },
-]
-
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
+  let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
 }, 100000)
 
@@ -37,7 +22,7 @@ test('blogs are returned as json', async () => {
 
 test('there are two blogs', async () => {
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length)
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
 test('the first blog author is Leeory Jenkins', async () => {
@@ -49,6 +34,7 @@ test('the first blog author is Leeory Jenkins', async () => {
   //expect(response.body[0].author).toBe('Leeory Jenkins')
 })
 
+//exercise 4.10
 test('a valid blog can be added', async () => {
   const newBlog = {
     title: '治大国如烙大饼',
@@ -65,7 +51,7 @@ test('a valid blog can be added', async () => {
 
   const res = await api.get('/api/blogs')
   const author = res.body.map((r) => r.author)
-  expect(res.body).toHaveLength(initialBlogs.length + 1)
+  expect(res.body).toHaveLength(helper.initialBlogs.length + 1)
   expect(author).toContain('一个小学生')
 })
 

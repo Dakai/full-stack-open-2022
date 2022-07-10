@@ -17,20 +17,9 @@ blogsRouter.get('/:id', async (req, res, next) => {
   } catch (exception) {
     next(exception)
   }
-  /*
-  Blog.findById(req.params.id)
-    .then((blog) => {
-      if (blog) {
-        res.json(blog)
-      } else {
-        res.status(404).end()
-      }
-    })
-		.catch((error) => next(error))
-		*/
 })
 
-blogsRouter.post('/', (req, res, next) => {
+blogsRouter.post('/', async (req, res, next) => {
   const body = req.body
   const blog = new Blog({
     title: body.title,
@@ -38,12 +27,12 @@ blogsRouter.post('/', (req, res, next) => {
     url: body.url,
     likes: body.likes,
   })
-  blog
-    .save()
-    .then((saveBlog) => {
-      res.status(201).json(saveBlog)
-    })
-    .catch((error) => next(error))
+  try {
+    const saveBlog = await blog.save()
+    res.status(201).json(saveBlog)
+  } catch (exception) {
+    next(exception)
+  }
 })
 
 module.exports = blogsRouter
