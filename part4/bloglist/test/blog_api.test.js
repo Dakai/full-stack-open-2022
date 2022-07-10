@@ -66,6 +66,26 @@ test('verify property likes default to 0 if missing', async () => {
   expect(likes[2]).toBe(0)
 })
 
+test('blog without title is not to be saved', async () => {
+  const newBlog = {
+    author: '徐俊平',
+    url: 'none',
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
+  const res = await api.get('/api/blogs')
+  //const authors = res.body.map((r) => r.author)
+  expect(res.body).toHaveLength(helper.initialBlogs.length)
+})
+
+test('blog without url is not to be saved', async () => {
+  const newBlog = {
+    author: '徐俊平',
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
+  const res = await api.get('/api/blogs')
+  expect(res.body).toHaveLength(helper.initialBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
