@@ -43,16 +43,27 @@ test('a valid blog can be added', async () => {
     likes: 0,
   }
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+  await api.post('/api/blogs').send(newBlog)
 
   const res = await api.get('/api/blogs')
   const author = res.body.map((r) => r.author)
   expect(res.body).toHaveLength(helper.initialBlogs.length + 1)
   expect(author).toContain('一个小学生')
+})
+
+//exercise 4.11
+test('verify property likes default to 0 if missing', async () => {
+  const newBlog = {
+    title: '治大国如烙大饼',
+    author: '徐俊平',
+    url: 'none',
+  }
+
+  await api.post('/api/blogs').send(newBlog)
+
+  const res = await api.get('/api/blogs')
+  const likes = res.body.map((r) => r.likes)
+  expect(likes[2]).toBe(0)
 })
 
 afterAll(() => {
