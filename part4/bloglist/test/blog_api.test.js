@@ -86,6 +86,21 @@ test('blog without url is not to be saved', async () => {
   expect(res.body).toHaveLength(helper.initialBlogs.length)
 })
 
+test('delete blog with id and correct response for nonexistent id ', async () => {
+  const response = await api.get('/api/blogs')
+  const ids = response.body.map((r) => r.id)
+  const id = ids[0]
+  console.log('ids[0]', id)
+  await api.delete(`/api/blogs/${id}`).expect(204)
+  await api.delete(`/api/blogs/${id}`).expect(404)
+})
+
+test('verify the unique id property exsits', async () => {
+  const response = await api.get('/api/blogs')
+  const ids = response.body.map((r) => r.id)
+  expect(ids[0]).toBeDefined()
+}, 100000)
+
 afterAll(() => {
   mongoose.connection.close()
 })
