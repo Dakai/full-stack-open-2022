@@ -12,6 +12,7 @@
   "author": "Dakai Ou",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "eslint": "^8.19.0",
