@@ -58,7 +58,51 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
+
+  //4.16
+  test('creation fails with username less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'ro',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    console.log(result.body.error)
+    expect(result.body.error).toContain(
+      'User validation failed: username: username must be at least three characters long'
+    )
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toEqual(usersAtStart)
+  })
+
+  test('creation fails with password less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const newUser = {
+      username: 'rot',
+      name: 'Mat',
+      password: 'sa',
+    }
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    console.log(result.body.error)
+    expect(result.body.error).toContain(
+      'password should be at least 3 characters long.'
+    )
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toEqual(usersAtStart)
+  })
 })
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
