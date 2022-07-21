@@ -1,11 +1,10 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-
 require('express-async-errors')
 
 blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   res.json(blogs)
 })
 
@@ -60,8 +59,6 @@ blogsRouter.put('/:id', async (req, res, next) => {
     runValidators: true,
     context: 'query',
   })
-  //const blogs = await Blog.find({})
-  //const blog = blogs.find((blog) => blog.id === req.params.id)
   res.status(204).end()
 })
 

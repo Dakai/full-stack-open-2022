@@ -3,6 +3,15 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 require('express-async-errors')
 
+usersRouter.get('/', async (req, res) => {
+  const users = await User.find({}).populate('blogs', {
+    url: 1,
+    title: 1,
+    author: 1,
+  })
+  res.json(users)
+})
+
 usersRouter.post('/', async (req, res) => {
   const { username, name, password } = req.body
 
@@ -30,15 +39,21 @@ usersRouter.post('/', async (req, res) => {
   res.status(201).json(savedUser)
 })
 
-usersRouter.get('/', async (req, res) => {
-  const users = await User.find({})
-  res.json(users)
+usersRouter.put('/:id', async (req, res, next) => {
+  const body = req.body
+  const user = {
+    blogs: body.blogs,
+  }
+  await User.findByIdAndUpdate(req.params.id, user, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  })
+  res.status(204).end()
 })
 
 usersRouter.delete('/:id', async (req, res) => {
   const user = await User.findById(req.params.id)
-  //const blogs = await Blog.find({})
-  //const blog = blogs.find((blog) => blog.id === req.params.id)
   if (user) {
     await User.findByIdAndRemove(req.params.id)
     res.status(204).end()
@@ -48,62 +63,3 @@ usersRouter.delete('/:id', async (req, res) => {
 })
 
 module.exports = usersRouter
-/*
-blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog.find({})
-  res.json(blogs)
-})
-
-blogsRouter.get('/:id', async (req, res, next) => {
-  const blog = await Blog.findById(req.params.id)
-  if (blog) {
-    res.json(blog)
-  } else {
-    res.status(404).end()
-  }
-})
-
-blogsRouter.post('/', async (req, res, next) => {
-  const body = req.body
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-  })
-  const saveBlog = await blog.save()
-  res.status(201).json(saveBlog)
-})
-
-blogsRouter.delete('/:id', async (req, res, next) => {
-  const blog = await Blog.findById(req.params.id)
-  //const blogs = await Blog.find({})
-  //const blog = blogs.find((blog) => blog.id === req.params.id)
-  if (blog) {
-    await Blog.findByIdAndRemove(req.params.id)
-    res.status(204).end()
-  } else {
-    res.status(404).end()
-  }
-})
-
-blogsRouter.put('/:id', async (req, res, next) => {
-  const body = req.body
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-  }
-  await Blog.findByIdAndUpdate(req.params.id, blog, {
-    new: true,
-    runValidators: true,
-    context: 'query',
-  })
-  //const blogs = await Blog.find({})
-  //const blog = blogs.find((blog) => blog.id === req.params.id)
-  res.status(204).end()
-})
-
-module.exports = blogsRouter
-*/
