@@ -23,8 +23,19 @@ const errorHandler = (error, req, res, next) => {
   next(error)
 }
 
+//need to fix for 4.20
+const tokenExtractor = (req, res, next) => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+    return authorization.substring(7)
+  }
+  return null
+  next()
+}
+
 module.exports = {
   requireLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
 }
